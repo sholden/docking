@@ -1,0 +1,32 @@
+
+dbstorage:
+  image: busybox
+  volumes:
+    - /var/lib/mysql
+  command: true
+
+db:
+  image: tutum/mysql
+  ports:
+    - "3306"
+  environment:
+    MYSQL_PASS: docking
+  volumes_from:
+    - dbstorage
+
+web:
+  build: .
+  command: rdebug-ide --port 1234 --host 0.0.0.0 -- ./bin/rails s -e development
+  ports:
+    - "3000:3000"
+    - "1234:1234"
+    - "26162:26162"
+#  volumes:
+#    - ".:/opt/docking"
+  links:
+    - db
+  environment:
+    DATABASE_URL: mysql2://admin:docking@db/docking_development
+    RAILS_ENV: development
+    DEBUG_PORT: "1234"
+    DISPATCHER_PORT: "21612"

@@ -13,13 +13,14 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
+  host: db
   username: root
-  password:
-  socket: /tmp/mysql.sock
+  password: docking
+  port: 3306
 
 development:
   <<: *default
-  database: docking_development
+  database: docking
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
