@@ -9,22 +9,22 @@ begin
 
   build_command = "docker build -t #{image_name} ."
   logger.info "Building container: #{build_command}"
-  `#{build_command}`
+  puts `#{build_command}`
 
   db_run_command = "docker run -d --name dockingdb -p 3306:3306 -e MYSQL_PASS=docking tutum/mysql"
   logger.info "Starting database: #{db_run_command}"
   db_container_id = `#{db_run_command}`.strip
   logger.info "Started db container: #{db_container_id}"
 
-  ci_command = "docker run --link dockingdb:db -e DATABASE_URL=mysql2://admin@db/docking_test -e CI=true -e COVERAGE=true #{image_name} bundle exec rake db:create db:migrate spec"
+  ci_command = "docker run --link dockingdb:db -e DATABASE_URL=mysql2://admin@db/docking_test -e RAILS_ENV=test -e CI=true -e COVERAGE=true #{image_name} bundle exec rake db:create db:migrate spec"
   logger.info "Running rake spec: #{ci_command}"
-  puts `#{ci_command}`
+  puts puts `#{ci_command}`
 
   db_stop_command = "docker stop #{db_container_id}"
   logger.info "Stopping database container: #{db_stop_command}"
-  `#{db_stop_command}`
+  puts `#{db_stop_command}`
 
   db_rm_command = "docker rm #{db_container_id}"
   logger.info "Removing db container: #{db_rm_command}"
-  `#{db_rm_command}`
+  puts `#{db_rm_command}`
 end
