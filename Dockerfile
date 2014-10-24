@@ -10,3 +10,4 @@ VOLUME /artifacts
 
 RUN bundle install --path /opt/bundle --deployment
 ADD . /opt/docking
+CMD bundle exec rails s
