@@ -7,9 +7,11 @@ begin
 
   image_name = "sholden/docking:#{ENV['BUILD_NUMBER']}"
 
+  success = true
+
   build_command = "docker build -t #{image_name} ."
   logger.info "Building container: #{build_command}"
-  puts `#{build_command}`
+  success &= system(build_command)
 
   db_run_command = "docker run -d --name dockingdb -p 3306:3306 -e MYSQL_PASS=docking tutum/mysql"
   logger.info "Starting database: #{db_run_command}"
@@ -18,13 +20,15 @@ begin
 
   ci_command = "docker run --link dockingdb:db -e DATABASE_URL=mysql2://admin@db/docking_test -e RAILS_ENV=test -e CI=true -e COVERAGE=true #{image_name} bundle exec rake db:create db:migrate spec"
   logger.info "Running rake spec: #{ci_command}"
-  puts puts `#{ci_command}`
+  success &= system(ci_command)
 
   db_stop_command = "docker stop #{db_container_id}"
   logger.info "Stopping database container: #{db_stop_command}"
-  puts `#{db_stop_command}`
+  success &= system(db_stop_command)
 
   db_rm_command = "docker rm #{db_container_id}"
   logger.info "Removing db container: #{db_rm_command}"
-  puts `#{db_rm_command}`
+  success &= system(db_rm_command)
+
+  raise 'Build failed.' unless success
 end
