@@ -6,6 +6,7 @@ ADD ./Gemfile /opt/docking/Gemfile
 ADD ./Gemfile.lock /opt/docking/Gemfile.lock
 ADD ./.gemrc /usr/local/etc/gemrc
 
+VOLUME /artifacts
 
 RUN bundle install --path /opt/bundle --deployment
 ADD . /opt/docking
