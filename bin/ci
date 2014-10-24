@@ -16,7 +16,7 @@ begin
   db_container_id = `#{db_run_command}`.strip
   logger.info "Started db container: #{db_container_id}"
 
-  ci_command = "docker run --link dockingdb:db -e DATABASE_URL=mysql2://root@db/docking_test -e CI=true -e COVERAGE=true #{image_name} bundle exec rake db:create db:migrate spec"
+  ci_command = "docker run --link dockingdb:db -e DATABASE_URL=mysql2://admin@db/docking_test -e CI=true -e COVERAGE=true #{image_name} bundle exec rake db:create db:migrate spec"
   logger.info "Running rake spec: #{ci_command}"
   puts `#{ci_command}`
 
