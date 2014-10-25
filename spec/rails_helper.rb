@@ -4,8 +4,14 @@ require 'spec_helper'
 
 if ENV["COVERAGE"]
   require 'simplecov'
+  require 'simplecov-rcov'
+
+  if ENV["CI"]
+    SimpleCov.formatters = [SimpleCov::Formatter::HTMLFormatter, SimpleCov::Formatter::RcovFormatter]
+  end
+
   SimpleCov.start 'rails' do
-    coverage_dir '/artifacts/coverage' if ENV["CI"]
+    coverage_dir "#{ENV['CI_REPORTS']}/coverage" if ENV["CI_REPORTS"]
   end
 end
 

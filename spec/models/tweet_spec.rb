@@ -1,5 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Tweet, :type => :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:user) { User.new }
+  subject { user.tweets.build(body: 'body') }
+
+  it 'should have a body' do
+    expect(subject.body).to eql('body')
+  end
 end

@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  host: db
+  host: localhost
   username: root
-  password: docking
+  password: 
   port: 3306
 
 development:
