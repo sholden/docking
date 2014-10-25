@@ -13,7 +13,7 @@ begin
   logger.info "Building container: #{build_command}"
   success &= system(build_command)
 
-  db_run_command = 'docker run -d --name dockingdb -p 3306:3306 -e MYSQL_PASS="docking" tutum/mysql'
+  db_run_command = 'docker run -d --name dockingdb -p "3306:3306" -e MYSQL_PASS="docking" tutum/mysql'
   logger.info "Starting database: #{db_run_command}"
   db_container_id = `#{db_run_command}`.strip
   logger.info "Started db container: #{db_container_id}"
