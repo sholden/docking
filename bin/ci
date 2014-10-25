@@ -18,6 +18,8 @@ begin
   db_container_id = `#{db_run_command}`.strip
   logger.info "Started db container: #{db_container_id}"
 
+  sleep 10
+
   ci_command = "docker run --link dockingdb:db -v \"$WORKSPACE:/artifacts\" -e DATABASE_URL=\"mysql2://admin:docking@db:3306/docking_test\" -e RAILS_ENV=test #{image_name} /bin/bash -c \"bundle exec rake db:drop db:create db:migrate spec\""
   logger.info "Running rake spec: #{ci_command}"
   success &= system(ci_command)
